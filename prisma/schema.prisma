@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Genre {
+  id     Int     @id
+  name   String
+  movies Movie[] @relation("GenreToMovie")
+}
+
+model ProductionCompany {
+  id     Int     @id
+  name   String
+  movies Movie[] @relation("MovieToProductionCompany")
+}
+
+model Movie {
+  id                  Int                 @id
+  title               String
+  originalTitle       String
+  overview            String
+  popularity          Float
+  releaseDate         String
+  runtime             Int
+  tagline             String
+  genres              Genre[]             @relation("GenreToMovie")
+  productionCompanies ProductionCompany[] @relation("MovieToProductionCompany")
+}
