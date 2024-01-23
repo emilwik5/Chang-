@@ -31,3 +31,11 @@ model Movie {
   genres              Genre[]             @relation("GenreToMovie")
   productionCompanies ProductionCompany[] @relation("MovieToProductionCompany")
 }
+
+model User {
+  id       String @id @default(uuid())
+  username String
+  email    String
+  password String
+  meta     Json?
+}
