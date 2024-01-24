@@ -1,69 +1,50 @@
-import Input from "../ui/Input";
+"use client";
 import Link from "next/link";
-import prisma from "@/lib/prisma";
-import argon2 from "argon2";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { SignJWT } from "jose";
+import { Button } from "@nextui-org/button";
+import { Input, Card, CardBody } from "@nextui-org/react";
+import { loginUser } from "../actions";
+import { useFormState } from "react-dom";
+
+const initialState = {
+  message: "",
+};
 
 export default function Page() {
-  async function login(formData: FormData) {
-    "use server";
-
-    const { email, pw } = {
-      email: formData.get("email"),
-      pw: formData.get("password"),
-    };
-
-    const user = await prisma.user.findFirst({
-      where: {
-        email: email?.toString(),
-      },
-    });
-
-    if (!user) {
-      console.log("No user with that email exists.");
-      return;
-    }
-
-    const verified = await argon2.verify(user.password, pw?.toString()!);
-
-    if (!verified) {
-      console.error("Invalid credentials");
-      return;
-    }
-
-    const signedJwt = await new SignJWT(user)
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime("2h")
-      .sign(new TextEncoder().encode(process.env.JWT_SECRET_KEY));
-
-    cookies().set("accessToken", signedJwt, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 2,
-      path: "/",
-    });
-
-    redirect("/home");
-  }
+  const [state, formAction] = useFormState(loginUser, initialState);
 
   return (
     <>
       <h2 className="m-2">Login</h2>
-      <form action={login}>
-        <Input placeholder="Email" name="email" />
-        <Input placeholder="Password" name="password" type="password" />
-        <button
-          type="submit"
-          className="h-10 w-20 bg-white rounded-md m-1 solid border-2 border-black-200 text-black"
-        >
-          Login
-        </button>
-        <Link className="text-sm ml-5" href="/create-account">
-          Not a member?
-        </Link>
+      <form action={formAction} className="flex flex-col space-y-2">
+        <Input
+          type="email"
+          label="Email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+
+        <Input
+          type="password"
+          label="Password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+        <div>
+          <Button type="submit">Login</Button>
+
+          <Link className="text-sm ml-5" href="/create-account">
+            Not a member?
+          </Link>
+        </div>
+        {state.message && (
+          <Card>
+            <CardBody>
+              <p>{state.message}</p>
+            </CardBody>
+          </Card>
+        )}
       </form>
     </>
   );

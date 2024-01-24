@@ -1,12 +1,13 @@
-import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
+import prisma from "@/lib/prisma";
+import { verify } from "argon2";
 
 export async function verifyAccessToken(req: NextRequest) {
   const accessToken = req.cookies.get("accessToken")?.value;
 
   if (!accessToken) {
-    return null;
+    throw Error("No access token in cookies.");
   }
 
   try {
@@ -17,6 +18,26 @@ export async function verifyAccessToken(req: NextRequest) {
     return verified.payload;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
+}
+
+export async function handleLogin(email: string, password: string) {
+  const user = await prisma.user.findFirst({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) {
+    throw Error("User does not exist.");
+  }
+
+  const verified = await verify(user.password, password);
+
+  if (!verified) {
+    throw Error("Invalid credentials");
+  }
+
+  return user;
 }

@@ -1,8 +1,10 @@
-import Input from "@/app/ui/Input";
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/react";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import argon2 from "argon2";
 import { redirect } from "next/navigation";
+import { Divider } from "@nextui-org/react";
 
 export default function Page() {
   async function createAccount(formData: FormData) {
@@ -50,24 +52,28 @@ export default function Page() {
   return (
     <>
       <h2 className="m-2">Create Account</h2>
-      <form action={createAccount}>
-        <Input placeholder="Username" name="username" />
-        <Input placeholder="Email" name="email" />
-        <Input placeholder="Password" name="password" type="password" />
+      <form action={createAccount} className="flex flex-col space-y-2">
+        <Input placeholder="Username" name="username" size="sm" />
+        <Input placeholder="Email" name="email" size="sm" />
+        <Input
+          placeholder="Password"
+          name="password"
+          type="password"
+          size="sm"
+        />
         <Input
           placeholder="Confirm Password"
           name="confirm-password"
           type="password"
+          size="sm"
         />
-        <button
-          type="submit"
-          className="h-10 w-full bg-white rounded-md m-1 solid border-2 border-black-200 text-black"
-        >
-          Create account
-        </button>
-        <Link className="text-sm ml-5" href="/login">
-          Back to login
-        </Link>
+        <Divider />
+        <div>
+          <Button type="submit">Create account</Button>
+          <Link className="text-sm ml-5" href="/login">
+            Back to login
+          </Link>
+        </div>
       </form>
     </>
   );

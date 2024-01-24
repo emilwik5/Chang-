@@ -32,10 +32,21 @@ model Movie {
   productionCompanies ProductionCompany[] @relation("MovieToProductionCompany")
 }
 
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  revoked   Boolean
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model User {
-  id       String @id @default(uuid())
-  username String
-  email    String
-  password String
-  meta     Json?
+  id            String         @id @default(uuid())
+  username      String
+  email         String
+  password      String
+  meta          Json?
+  refreshTokens RefreshToken[]
 }

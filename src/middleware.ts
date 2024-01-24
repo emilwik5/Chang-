@@ -7,13 +7,10 @@ export const config = {
 };
 
 export async function middleware(request: NextRequest) {
-  console.log("middleware");
-
-  const verified = await verifyAccessToken(request);
-
-  if (!verified) {
+  try {
+    await verifyAccessToken(request);
+    return NextResponse.next();
+  } catch (error) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-
-  return NextResponse.next();
 }
