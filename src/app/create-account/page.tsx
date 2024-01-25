@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/react";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import argon2 from "argon2";
+import * as argon2 from "argon2";
 import { redirect } from "next/navigation";
 import { Divider } from "@nextui-org/react";
 

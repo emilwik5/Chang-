@@ -34,6 +34,8 @@ export async function loginUser(prev: any, formData: FormData) {
 
     redirect("/home");
   } catch (error) {
+    console.error(error);
+
     return {
       message: "Invalid credentials",
     };

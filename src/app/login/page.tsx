@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { Input, Card, CardBody } from "@nextui-org/react";

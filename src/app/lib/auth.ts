@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import prisma from "@/lib/prisma";
-import { verify } from "argon2";
+import * as argon2 from "argon2";
 
 export async function verifyAccessToken(req: NextRequest) {
   const accessToken = req.cookies.get("accessToken")?.value;
@@ -33,7 +33,7 @@ export async function handleLogin(email: string, password: string) {
     throw Error("User does not exist.");
   }
 
-  const verified = await verify(user.password, password);
+  const verified = await argon2.verify(user.password, password);
 
   if (!verified) {
     throw Error("Invalid credentials");
