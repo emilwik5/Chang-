@@ -31,8 +31,6 @@ export async function loginUser(prev: any, formData: FormData) {
       maxAge: 60 * 60 * 2,
       path: "/",
     });
-
-    redirect("/home");
   } catch (error) {
     console.error(error);
 
@@ -40,4 +38,6 @@ export async function loginUser(prev: any, formData: FormData) {
       message: "Invalid credentials",
     };
   }
+
+  redirect("/home");
 }

@@ -40,9 +40,9 @@ export default function Page() {
           </Link>
         </div>
         {state.message && (
-          <Card>
+          <Card className="border border-red-500/40 bg-red-500/20">
             <CardBody>
-              <p>{state.message}</p>
+              <p className="text-center">{state.message}</p>
             </CardBody>
           </Card>
         )}
