@@ -1,10 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@nextui-org/button";
-import { Input, Card, CardBody } from "@nextui-org/react";
 import { loginUser } from "../actions";
 import { useFormState } from "react-dom";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const initialState = {
   message: "",
@@ -19,7 +26,6 @@ export default function Page() {
       <form action={formAction} className="flex flex-col space-y-2">
         <Input
           type="email"
-          label="Email"
           name="email"
           placeholder="Enter your email"
           required
@@ -27,7 +33,6 @@ export default function Page() {
 
         <Input
           type="password"
-          label="Password"
           name="password"
           placeholder="Enter your password"
           required
@@ -41,9 +46,9 @@ export default function Page() {
         </div>
         {state.message && (
           <Card className="border border-red-500/40 bg-red-500/20">
-            <CardBody>
-              <p className="text-center">{state.message}</p>
-            </CardBody>
+            <CardHeader>
+              <CardDescription>{state.message}</CardDescription>
+            </CardHeader>
           </Card>
         )}
       </form>

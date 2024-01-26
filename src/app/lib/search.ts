@@ -1,24 +1,29 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { error } from "console";
 
-export async function getFilm(prev: any, formData: FormData) {
-  const moviename = formData.get("moviename");
-  console.log(moviename);
+export async function getMovies(query: string) {
   try {
-    const result = await prisma.movie.findFirst({
+    const q = query.split(" ").join(" | ");
+
+    const result = await prisma.movie.findMany({
       where: {
-        title: moviename,
+        title: {
+          search: q,
+        },
+      },
+      orderBy: {
+        _relevance: {
+          fields: ["title"],
+          search: q,
+          sort: "desc",
+        },
       },
     });
-    if (result) {
-      return result;
-    } else {
-      throw new Error("Movie with name not found");
-    }
+
+    return result;
   } catch (e) {
-    console.error("Error:", e.message);
-    return { error: e.message };
+    console.error(e);
+    return [];
   }
 }
