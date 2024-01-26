@@ -1,7 +1,5 @@
-export default async function Page() {
-  return (
-    <>
-      <h2 className="m-2">Signed in</h2>
-    </>
-  );
+import NavbarChang from "../lib/nav-bar";
+
+export default function Page() {
+  
 }

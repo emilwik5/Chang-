@@ -16,7 +16,7 @@ export default function Home() {
         </NavbarBrand>
 
         <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
+          <NavbarItem>
             <Link href="/login">Login</Link>
           </NavbarItem>
           <NavbarItem>
