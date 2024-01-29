@@ -27,3 +27,11 @@ export async function getMovies(query: string) {
     return [];
   }
 }
+export async function getMovieById(id: number) {
+  const result = await prisma.movie.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return result;
+}

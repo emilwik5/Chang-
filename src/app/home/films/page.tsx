@@ -4,11 +4,11 @@ import { getMovies } from "@/app/lib/search";
 import { useState } from "react";
 import { Movie } from "@prisma/client";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -42,19 +42,25 @@ export default function Page() {
 
       <div className="grid grid-cols-3 gap-3 mt-5 px-10">
         {movies.map((movie) => (
-          <Card key={movie.id}>
+          <Card className="overflow-hidden" key={movie.id}>
             <CardHeader className="flex gap-3">
-              <CardTitle>{movie.title}</CardTitle>
-              <CardDescription>{movie.overview}</CardDescription>
+              <CardTitle>
+                <Link href={`/home/films/${movie.id}`}>
+                  <p>{movie.title}</p>
+                </Link>
+                <p className="text-sm text-slate-500 mt-2">
+                  {movie.releaseDate.split("-")[0]}
+                </p>
+              </CardTitle>
+              <CardDescription>
+                <div className="max-h-16 ">{movie.overview}</div>
+              </CardDescription>
               <div className="flex flex-col">
                 <p className="text-md"></p>
                 <p className="text-small text-default-500"></p>
               </div>
             </CardHeader>
             <CardContent></CardContent>
-            <CardFooter>
-              <p>{movie.releaseDate}</p>
-            </CardFooter>
           </Card>
         ))}
       </div>

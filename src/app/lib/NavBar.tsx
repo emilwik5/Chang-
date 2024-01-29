@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function NavbarComponent() {
   return (
     <>
-      <div className="flex items-center justify-between h-full px-10">
+      <div className="flex items-center justify-between h-16 px-10 bg-red-900">
         <Link href="/home">
           <Image
             className="mb-4"
@@ -22,6 +22,9 @@ export default function NavbarComponent() {
             height={140}
             alt="chang"
           ></Image>
+          <h1 className="absolute font-extrabold text-2xl -mt-14 ml-24">
+            CHANG
+          </h1>
         </Link>
 
         <DropdownMenu>
