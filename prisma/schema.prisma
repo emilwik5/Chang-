@@ -31,6 +31,7 @@ model Movie {
   tagline             String
   genres              Genre[]             @relation("GenreToMovie")
   productionCompanies ProductionCompany[] @relation("MovieToProductionCompany")
+  watchedlistedBy     User[]
 }
 
 model RefreshToken {
@@ -49,5 +50,6 @@ model User {
   email         String
   password      String
   meta          Json?
+  watchlist     Movie[]
   refreshTokens RefreshToken[]
 }

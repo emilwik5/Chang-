@@ -1,9 +1,10 @@
 "use server";
 
 import { SignJWT } from "jose";
-import { handleLogin } from "./lib/auth";
+import { handleLogin, userFromToken } from "./lib/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 export async function loginUser(prev: any, formData: FormData) {
   const { email, pw } = {
@@ -40,4 +41,74 @@ export async function loginUser(prev: any, formData: FormData) {
   }
 
   redirect("/home");
+}
+
+export async function addToWatchlist(movieId: number) {
+  const value = cookies().get("accessToken")?.value;
+
+  try {
+    const user = await userFromToken(value!);
+    const res = await prisma.user.update({
+      where: {
+        id: user?.id,
+      },
+      data: {
+        watchlist: {
+          connect: {
+            id: movieId,
+          },
+        },
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+export async function removeFromWatchlist(movieId: number) {
+  const value = cookies().get("accessToken")?.value;
+
+  try {
+    const user = await userFromToken(value!);
+    const res = await prisma.user.update({
+      where: {
+        id: user?.id,
+      },
+      data: {
+        watchlist: {
+          disconnect: {
+            id: movieId,
+          },
+        },
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+export async function getWatchedlist() {
+  const value = cookies().get("accessToken")?.value;
+
+  try {
+    const user = await userFromToken(value!);
+    const res = await prisma.user.findFirst({
+      where: {
+        id: user?.id,
+      },
+      include: {
+        watchlist: true,
+      },
+    });
+
+    return res?.watchlist;
+  } catch (error) {
+    console.error(error);
+  }
 }

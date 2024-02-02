@@ -22,6 +22,25 @@ export async function verifyAccessToken(req: NextRequest) {
   }
 }
 
+export async function userFromToken(accessToken: string) {
+  try {
+    const verified = await jwtVerify(
+      accessToken,
+      new TextEncoder().encode(process.env.JWT_SECRET_KEY)
+    );
+    const user = await prisma.user.findFirst({
+      where: {
+        // @ts-ignore
+        id: verified.payload.id,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function handleLogin(email: string, password: string) {
   const user = await prisma.user.findFirst({
     where: {
