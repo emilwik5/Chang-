@@ -4,16 +4,6 @@ import { getMovies } from "@/app/lib/search";
 import { useState, useEffect } from "react";
 import { Movie } from "@prisma/client";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
 import {
   addToWatchlist,
   getWatchedlist,

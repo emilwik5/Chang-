@@ -112,3 +112,23 @@ export async function getWatchedlist() {
     console.error(error);
   }
 }
+
+export async function getMoviePosterUrl(movieId: number) {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+        },
+      }
+    );
+    const posterUrl = (await res.json()).poster_path as string;
+
+    return posterUrl;
+  } catch (error) {
+    console.error(error);
+  }
+}
