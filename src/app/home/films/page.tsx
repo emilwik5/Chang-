@@ -26,13 +26,13 @@ export default function Page() {
   }
 
   async function onAddToWatchlist(movie: Movie) {
+    setWatchlist([...watchlist, movie]);
     const res = await addToWatchlist(movie.id);
-    if (res) setWatchlist([...watchlist, movie]);
   }
 
   async function onRemoveFromWatchlist(movie: Movie) {
+    setWatchlist(watchlist.filter((f) => f.id !== movie.id));
     const res = await removeFromWatchlist(movie.id);
-    if (res) setWatchlist(watchlist.filter((f) => f.id !== movie.id));
   }
 
   useEffect(() => {
