@@ -9,24 +9,30 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { Clock } from "lucide-react";
+import { Clock, PopcornIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { getMoviePosterUrl } from "@/app/actions";
+import { addReview, getMoviePosterUrl } from "@/app/actions";
+import { clsx } from "clsx";
 
 export default function MovieCard({
   movie,
   watchlisted,
+  rating,
   onAddToWatchlist,
   onRemoveFromWatchlist,
+  onSetRating,
 }: {
   movie: Movie;
   watchlisted: boolean;
+  rating?: number;
   onAddToWatchlist: (movie: Movie) => Promise<void>;
   onRemoveFromWatchlist: (movie: Movie) => Promise<void>;
+  onSetRating: (rating: number, movieId: number) => Promise<void>;
 }) {
   const [posterPath, setPosterPath] = useState<string>();
+  const [hoverScore, setHoverScore] = useState<number>();
 
   useEffect(() => {
     const getUrl = async () => {
@@ -66,6 +72,25 @@ export default function MovieCard({
           <p className="text-sm text-slate-500 mt-2">
             {movie.releaseDate.split("-")[0]}
           </p>
+          <div className="flex justify-between h-4">
+            <div className="flex">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((s) => (
+                <PopcornIcon
+                  key={s}
+                  onMouseOver={() => setHoverScore(s)}
+                  onMouseLeave={() => setHoverScore(undefined)}
+                  className={clsx(
+                    "h-5 w-5 cursor-pointer",
+                    hoverScore && s <= hoverScore && "text-red-500",
+                    rating && s <= rating && !hoverScore && "text-red-500"
+                  )}
+                  onClick={() => onSetRating(s, movie.id)}
+                ></PopcornIcon>
+              ))}
+            </div>
+
+            {hoverScore && <p className="text-sm">{hoverScore} / 10</p>}
+          </div>
         </CardTitle>
         <CardDescription>
           {posterPath && posterPath.length > 0 ? (

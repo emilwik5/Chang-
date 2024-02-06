@@ -284,3 +284,57 @@ export async function importFromTmdb(movieId: number) {
     console.error(error);
   }
 }
+
+export async function addReview(rating: number, movieId: number) {
+  const value = cookies().get("accessToken")?.value;
+
+  try {
+    const user = await userFromToken(value!);
+
+    const res = await prisma.movieReview.upsert({
+      where: {
+        userId_movieId: {
+          movieId: movieId,
+          userId: user?.id!,
+        },
+      },
+      update: {
+        rating: rating,
+      },
+      create: {
+        rating: rating,
+        userId: user?.id!,
+        movieId: movieId,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getRatings(movieIds: number[]) {
+  const value = cookies().get("accessToken")?.value;
+
+  try {
+    const user = await userFromToken(value!);
+
+    const res = await prisma.movieReview.findMany({
+      where: {
+        userId: user?.id!,
+        movieId: {
+          in: movieIds,
+        },
+      },
+      select: {
+        movieId: true,
+        rating: true,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+}
