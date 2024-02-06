@@ -32,6 +32,7 @@ model Movie {
   genres              Genre[]             @relation("GenreToMovie")
   productionCompanies ProductionCompany[] @relation("MovieToProductionCompany")
   watchedlistedBy     User[]
+  reviews             MovieReview[]
 }
 
 model RefreshToken {
@@ -44,12 +45,29 @@ model RefreshToken {
   updatedAt DateTime @updatedAt
 }
 
+model MovieReview {
+  id      Int     @default(autoincrement())
+  userId  String
+  user    User    @relation(fields: [userId], references: [id])
+  movieId Int
+  movie   Movie   @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  rating  Int
+  content String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, movieId])
+}
+
 model User {
-  id            String         @id @default(uuid())
-  username      String
-  email         String
-  password      String
-  meta          Json?
-  watchlist     Movie[]
+  id             String        @id @default(uuid())
+  username       String
+  email          String
+  password       String
+  meta           Json?
+  watchlist      Movie[]
+  reviewedMovies MovieReview[]
+
   refreshTokens RefreshToken[]
 }
