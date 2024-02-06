@@ -34,7 +34,7 @@ export default function NavbarComponent() {
               <Link href="/home/profile">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/home/films">Films</Link>
+              <Link href="/home/movies/search/test">Films</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link href="/home/news">News</Link>

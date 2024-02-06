@@ -46,7 +46,7 @@ export default function MovieCard({
       </div>
       <CardHeader className="flex gap-3 mt-4">
         <CardTitle>
-          <Link href={`/home/films/${movie.id}`}>
+          <Link href={`/home/movie/${movie.id}`}>
             <p>{movie.title}</p>
           </Link>
           <p className="text-sm text-slate-500 mt-2">
