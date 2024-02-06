@@ -1,10 +1,9 @@
-import NavbarComponent from "@/app/lib/NavBar";
-import NavbarChang from "@/app/lib/NavBar";
+import NavBar from "@/components/nav-bar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <NavbarComponent></NavbarComponent>
+      <NavBar />
       <div className="flex flex-col justify-start items-center mt-10">
         <div>{children}</div>
       </div>

@@ -1,16 +1,13 @@
-"use client";
 import Image from "next/image";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default function NavbarComponent() {
+export default function Navbar() {
   return (
     <>
       <div className="flex items-center justify-between h-16 px-10 bg-red-900">
@@ -41,6 +38,9 @@ export default function NavbarComponent() {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link href="/home/watchlist">Watchlist</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/home/add-movie">Add movie</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -23,12 +23,15 @@ export default async function Page({ params }: { params: { query: string } }) {
               placeholder="Enter movie here"
               required
             ></Input>
-            <Input type="submit" className="hidden" ></Input>
+            <Input type="submit" className="hidden"></Input>
           </form>
         </div>
       </div>
-
-      <MovieGrid movies={movies}></MovieGrid>
+      {movies.length ? (
+        <MovieGrid movies={movies}></MovieGrid>
+      ) : (
+        <div className="m-12 text-3xl">No movies found!</div>
+      )}
     </div>
   );
 }

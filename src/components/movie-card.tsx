@@ -11,6 +11,9 @@ import {
 import { Button } from "./ui/button";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { getMoviePosterUrl } from "@/app/actions";
 
 export default function MovieCard({
   movie,
@@ -23,6 +26,17 @@ export default function MovieCard({
   onAddToWatchlist: (movie: Movie) => Promise<void>;
   onRemoveFromWatchlist: (movie: Movie) => Promise<void>;
 }) {
+  const [posterPath, setPosterPath] = useState<string>();
+
+  useEffect(() => {
+    const getUrl = async () => {
+      const poster = await getMoviePosterUrl(movie.id);
+
+      if (poster) setPosterPath(poster);
+    };
+
+    getUrl();
+  }, []);
   return (
     <Card className="relative" key={movie.id}>
       <div className="absolute right-0 p-2">
@@ -53,6 +67,19 @@ export default function MovieCard({
             {movie.releaseDate.split("-")[0]}
           </p>
         </CardTitle>
+        <CardDescription>
+          {posterPath && posterPath.length > 0 ? (
+            <Image
+              className="rounded-md w-auto h-auto"
+              src={`https://image.tmdb.org/t/p/original${posterPath}`}
+              alt="Movie Poster"
+              width={200}
+              height={450}
+            />
+          ) : (
+            "No poster available"
+          )}
+        </CardDescription>
       </CardHeader>
       <CardContent className=" h-56 overflow-y-auto">
         {movie.overview}
